@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace clonar.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("")]
 public class GateWayController : ControllerBase
 {
-    [HttpGet(Name = "Test")]
-    public ActionResult GetTest()
+    [HttpPost]
+    [Route("[action]")]
+    public ActionResult Test()
     {
         return Ok(new {Response = "ok"});
     }
