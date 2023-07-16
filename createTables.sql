@@ -1,11 +1,11 @@
-CREATE TABLE Comments (
+CREATE TABLE comment (
 	id			serial 	PRIMARY KEY,
 	parentID	integer,
 	userText	text NOT NULL,
 	deleted		boolean NOT NULL
 );
 
-CREATE TABLE Users (
+CREATE TABLE account (
 	id 			serial PRIMARY KEY,
 	email 		VARCHAR ( 30 ) UNIQUE NOT NULL,
 	username 	VARCHAR ( 10 ) UNIQUE NOT NULL,
@@ -13,20 +13,20 @@ CREATE TABLE Users (
 	karma 		integer DEFAULT 0
 );
 
-CREATE TABLE UsersComments (
+CREATE TABLE accountComment (
 	id			serial PRIMARY KEY,
-	commentID	integer REFERENCES Comments(id),
-	userID		integer REFERENCES Users(id)
+	commentID	integer REFERENCES Comment(id),
+	userID		integer REFERENCES account(id)
 );
 
-CREATE TABLE Thread (
+CREATE TABLE thread (
 	id 			serial PRIMARY KEY,
-	userID	 	integer REFERENCES Users(id),
-	commentsID	integer REFERENCES UsersComments(id),
+	userID	 	integer REFERENCES account(id),
+	commentsID	integer REFERENCES AccountComment(id),
 	deleted		boolean NOT NULL
 );
 
-CREATE TABLE ThreadCol (
+CREATE TABLE threadCol (
 	id			serial PRIMARY KEY,
 	threadID	integer REFERENCES Thread(id)
 );
