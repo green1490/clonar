@@ -19,22 +19,22 @@ public class UserController : ControllerBase
 
     [HttpGet]
     [Route("login")]
-    public ActionResult Get([FromBody] Login login)
+    public ActionResult Get([FromQuery] Login login)
     {
         using UserContext db = new();
         var user = db.Accounts
-            .Where(x => x.email == login.UserName && x.password == login.Password);
-        if (user is null)
+            .Where(x => x.email == login.Email && x.password == login.Password);
+        if (user.Count() != 1 || user is null)
         {
             return BadRequest(JsonSerializer.Serialize(new {Response = "Wrong email or password"}));
         }
-        return Ok(JsonSerializer.Serialize(new {Response = user}));
+        return Ok(JsonSerializer.Serialize(new {Response = user.First()}));
     }
 
     [HttpPost]
     [Route("registration")]
     public async Task<ActionResult> Post([FromBody] Account account)
-    {
+    {   
         UserContext db = new();
         db.Add(account);
         try 
@@ -44,7 +44,6 @@ public class UserController : ControllerBase
         }
         catch
         {
-            _logger.LogError("Internal error");
             return BadRequest(JsonSerializer.Serialize(new {Response = "Unseccessful registration"}));
         }
     }

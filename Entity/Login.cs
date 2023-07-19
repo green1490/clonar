@@ -1,8 +1,12 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Entity;
 
 public class Login
 {
-    public string UserName {get;set;} = string.Empty;
+    [EmailAddress]
+    public string Email {get;set;} = string.Empty;
 
+    [MaxLength(12)]
     public string Password {get;set;} = string.Empty;
 }

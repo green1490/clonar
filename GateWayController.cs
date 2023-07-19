@@ -9,22 +9,19 @@ namespace clonar.Controllers;
 public class GateWayController : ControllerBase
 {
     private readonly ILogger _logger;
+    private HttpClient client = new () {BaseAddress = new Uri("http://localhost:5246") };
+
 
     public GateWayController(ILogger<GateWayController> logger)
     {
         _logger = logger;
     }
 
-    private HttpClient client = new () {BaseAddress = new Uri("http://localhost:5246") };
     [HttpGet]
     [Route("login")]
-    public async Task<ActionResult> Get([FromBody] Login login)
+    public ActionResult Get([FromQuery] Login login)
     {
-        using var result = await client.PostAsync(
-            "/api/user/login",
-            new StringContent(JsonSerializer.Serialize(login))
-        );
-        return Ok(result.Content);
+        return RedirectToAction("Get","User",login);
     }
 
     [HttpPost]
@@ -34,10 +31,8 @@ public class GateWayController : ControllerBase
         using var response = await client.PostAsJsonAsync("/api/user/registration", account);
         if (response.StatusCode == System.Net.HttpStatusCode.OK)
         {
-            _logger.LogInformation("Successful registration");
             return Ok();
         }
-        _logger.LogInformation(await response.Content.ReadAsStringAsync());
         return BadRequest();
     }
 }
