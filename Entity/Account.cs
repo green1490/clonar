@@ -6,6 +6,7 @@ namespace Entity;
 [Table("account")]
 public class Account
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
     public int id {get; set;}
 
