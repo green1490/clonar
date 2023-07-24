@@ -7,6 +7,7 @@ namespace Data;
 public class UserContext: DbContext
 {
     public DbSet<Account> Accounts {get;set;}
+    public DbSet<Collection> Collections {get;set;}
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder

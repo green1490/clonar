@@ -1,7 +1,7 @@
 CREATE TABLE comment (
-	id			serial 	PRIMARY KEY,
+	id			serial PRIMARY KEY,
 	parentID	integer,
-	userText	text NOT NULL,
+	userText	VARCHAR(3000) NOT NULL,
 	deleted		boolean NOT NULL
 );
 
@@ -22,11 +22,12 @@ CREATE TABLE accountComment (
 CREATE TABLE thread (
 	id 			serial PRIMARY KEY,
 	userID	 	integer REFERENCES account(id),
-	commentsID	integer REFERENCES AccountComment(id),
+	comment		VARCHAR(3000) NOT NULL,
 	deleted		boolean NOT NULL
 );
 
 CREATE TABLE threadCol (
 	id			serial PRIMARY KEY,
+	colName		VARCHAR(40),
 	threadID	integer REFERENCES Thread(id)
 );

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Entity;
-using System.Text.Json;
 
 namespace clonar.Controllers;
 
@@ -34,5 +33,12 @@ public class GateWayController : ControllerBase
             return Ok();
         }
         return BadRequest();
+    }
+
+    [Route("creation")]
+    [HttpPost]
+    public ActionResult Get([FromBody] Collection collection)
+    {
+        return Ok();
     }
 }

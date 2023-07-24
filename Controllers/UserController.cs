@@ -1,5 +1,7 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Entity;
 using Data;
 using System.Text.Json;
@@ -19,16 +21,31 @@ public class UserController : ControllerBase
 
     [HttpGet]
     [Route("login")]
-    public ActionResult Get([FromQuery] Login login)
+    public async Task<ActionResult> Get([FromQuery] Login login)
     {
         using UserContext db = new();
-        var user = db.Accounts
+        var users = db.Accounts
             .Where(x => x.email == login.Email && x.password == login.Password);
-        if (user.Count() != 1 || user is null)
+        if (users.Count() != 1 || users is null)
         {
             return BadRequest(JsonSerializer.Serialize(new {Response = "Wrong email or password"}));
         }
-        return Ok(JsonSerializer.Serialize(new {Response = user.First()}));
+        var user =  users.First();
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.username),
+            new Claim("id",Convert.ToString(user.id))
+
+        };
+
+        var claimsIdentity = new ClaimsIdentity(
+            claims, CookieAuthenticationDefaults.AuthenticationScheme
+        );
+        await HttpContext.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            new ClaimsPrincipal(claimsIdentity)
+        );
+        return Ok(JsonSerializer.Serialize(new {Response = user }));
     }
 
     [HttpPost]
