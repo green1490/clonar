@@ -19,8 +19,7 @@ public class UserController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet]
-    [Route("login")]
+    [HttpGet("login")]
     public async Task<ActionResult> Get([FromQuery] Login login)
     {
         using UserContext db = new();
@@ -48,8 +47,7 @@ public class UserController : ControllerBase
         return Ok(JsonSerializer.Serialize(new {Response = user }));
     }
 
-    [HttpPost]
-    [Route("registration")]
+    [HttpPost("registration")]
     public async Task<ActionResult> Post([FromBody] Account account)
     {   
         UserContext db = new();

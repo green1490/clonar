@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Entity;
 
 namespace clonar.Controllers;
 
 [ApiController]
-[Route("")]
 public class GateWayController : ControllerBase
 {
     private readonly ILogger _logger;
@@ -16,15 +17,13 @@ public class GateWayController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet]
-    [Route("login")]
+    [HttpGet("login")]
     public ActionResult Get([FromQuery] Login login)
     {
         return RedirectToAction("Get","User",login);
     }
 
-    [HttpPost]
-    [Route("registration")]
+    [HttpPost("registration")]
     public async Task<ActionResult> Post([FromBody] Account account)
     {
         using var response = await client.PostAsJsonAsync("/api/user/registration", account);
@@ -35,10 +34,18 @@ public class GateWayController : ControllerBase
         return BadRequest();
     }
 
-    [Route("creation")]
-    [HttpPost]
-    public ActionResult Get([FromBody] Collection collection)
+    [HttpPost("creation")]
+    public ActionResult Post([FromBody] Collection collection)
     {
+        return Ok();
+    }
+
+    [HttpGet("logout")]
+    public async Task<ActionResult> Get()
+    {
+        await HttpContext.SignOutAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme
+        );
         return Ok();
     }
 }
