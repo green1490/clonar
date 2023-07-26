@@ -1,10 +1,10 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using Entity;
 using Data;
+using Entity;
 using System.Text.Json;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace clonar.Controllers;
 
@@ -22,9 +22,9 @@ public class UserController : ControllerBase
     [HttpGet("login")]
     public async Task<ActionResult> Get([FromQuery] Login login)
     {
-        using UserContext db = new();
+        using DataContext db = new();
         var users = db.Accounts
-            .Where(x => x.email == login.Email && x.password == login.Password);
+            .Where(x => x.Email == login.Email && x.Password == login.Password);
         if (users.Count() != 1 || users is null)
         {
             return BadRequest(JsonSerializer.Serialize(new {Response = "Wrong email or password"}));
@@ -32,11 +32,10 @@ public class UserController : ControllerBase
         var user =  users.First();
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, user.username),
-            new Claim("id",Convert.ToString(user.id))
+            new Claim(ClaimTypes.Name, user.Username),
+            new Claim("id",Convert.ToString(user.ID))
 
         };
-
         var claimsIdentity = new ClaimsIdentity(
             claims, CookieAuthenticationDefaults.AuthenticationScheme
         );
@@ -50,7 +49,7 @@ public class UserController : ControllerBase
     [HttpPost("registration")]
     public async Task<ActionResult> Post([FromBody] Account account)
     {   
-        UserContext db = new();
+        DataContext db = new();
         db.Add(account);
         try 
         {
@@ -59,6 +58,7 @@ public class UserController : ControllerBase
         }
         catch
         {
+            _logger.LogCritical("Db update exception");
             return BadRequest(JsonSerializer.Serialize(new {Response = "Unseccessful registration"}));
         }
     }

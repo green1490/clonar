@@ -1,7 +1,9 @@
+using Entity;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Entity;
 
 namespace clonar.Controllers;
 
@@ -10,7 +12,6 @@ public class GateWayController : ControllerBase
 {
     private readonly ILogger _logger;
     private HttpClient client = new () {BaseAddress = new Uri("http://localhost:5246") };
-
 
     public GateWayController(ILogger<GateWayController> logger)
     {
@@ -34,10 +35,19 @@ public class GateWayController : ControllerBase
         return BadRequest();
     }
 
+    [Authorize]
     [HttpPost("creation")]
-    public ActionResult Post([FromBody] Collection collection)
+    public async Task<ActionResult> Post([FromBody] Entity.Thread thread)
     {
-        return Ok();
+        int id = Convert.ToInt32(User.Claims.First(x => x.Type == "id").Value);
+        thread.UserID = id;
+
+        using var response = await client.PostAsJsonAsync("api/thread/creation",thread);
+        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            return Ok();
+        }
+        return BadRequest();
     }
 
     [HttpGet("logout")]

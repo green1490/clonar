@@ -1,8 +1,11 @@
+using Data;
+using Entity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace clonar.Controllers;
 
 [ApiController]
+[Route("api/thread")]
 public class ThreadController: ControllerBase
 {
     private ILogger _logger;
@@ -19,9 +22,20 @@ public class ThreadController: ControllerBase
         return Ok();
     }
 
-    [HttpPost("create")]
-    public ActionResult Post()
-    {
-        return Ok();
+    [HttpPost("creation")]
+    public async Task<ActionResult> Post([FromBody] Entity.Thread thread)
+    {   
+        using DataContext db = new();
+        try
+        {
+            await db.AddAsync(thread);
+            await db.SaveChangesAsync();
+            return Ok();
+        }
+        catch(Microsoft.EntityFrameworkCore.DbUpdateException e)
+        {
+            _logger.LogCritical(e.ToString());
+            return BadRequest();
+        }
     }
 }

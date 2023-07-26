@@ -4,10 +4,10 @@ using Entity;
 
 namespace Data;
 
-public class UserContext: DbContext
+public class DataContext: DbContext
 {
+    public DbSet<Entity.Thread> Threads {get;set;}
     public DbSet<Account> Accounts {get;set;}
-    public DbSet<Collection> Collections {get;set;}
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder

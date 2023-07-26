@@ -8,19 +8,24 @@ public class Account
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
-    public int id {get; set;}
+    [Column("id")]
+    public int ID {get; set;}
 
     [Required]
     [EmailAddress]
-    public String email {get;set;} = String.Empty;
+    [Column("email")]
+    public String Email {get;set;} = String.Empty;
 
     [Required]
     [MaxLength(10)]
-    public String username {get;set;} = String.Empty;
+    [Column("username")]
+    public String Username {get;set;} = String.Empty;
 
     [Required]
     [MaxLength(12)]
-    public String password {get;set;} = String.Empty;
+    [Column("password")]
+    public String Password {get;set;} = String.Empty;
 
-    public int karma {get;set;}
+    [Column("karma")]
+    public int Karma {get;set;}
 }

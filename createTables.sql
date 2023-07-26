@@ -15,19 +15,20 @@ CREATE TABLE account (
 
 CREATE TABLE accountComment (
 	id			serial PRIMARY KEY,
-	commentID	integer REFERENCES Comment(id),
+	commentID	integer REFERENCES comment(id),
 	userID		integer REFERENCES account(id)
 );
 
 CREATE TABLE thread (
 	id 			serial PRIMARY KEY,
 	userID	 	integer REFERENCES account(id),
-	comment		VARCHAR(3000) NOT NULL,
+	title		VARCHAR(100) NOT NULL,
+	threadText	VARCHAR(3000) NOT NULL,
 	deleted		boolean NOT NULL
 );
 
 CREATE TABLE threadCol (
 	id			serial PRIMARY KEY,
 	colName		VARCHAR(40),
-	threadID	integer REFERENCES Thread(id)
+	threadID	integer REFERENCES thread(id)
 );
