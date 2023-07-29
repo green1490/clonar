@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace clonar.Controllers;
 
+[Authorize]
 [ApiController]
 public class GateWayController : ControllerBase
 {
@@ -18,12 +19,14 @@ public class GateWayController : ControllerBase
         _logger = logger;
     }
 
+    [AllowAnonymous]
     [HttpGet("login")]
     public ActionResult Get([FromQuery] Login login)
     {
         return RedirectToAction("Get","User",login);
     }
 
+    [AllowAnonymous]
     [HttpPost("registration")]
     public async Task<ActionResult> Post([FromBody] Account account)
     {
@@ -35,8 +38,8 @@ public class GateWayController : ControllerBase
         return BadRequest();
     }
 
-    [Authorize]
-    [HttpPost("creation")]
+
+    [HttpPost("thread")]
     public async Task<ActionResult> Post([FromBody] Entity.Thread thread)
     {
         int id = Convert.ToInt32(User.Claims.First(x => x.Type == "id").Value);
@@ -57,5 +60,16 @@ public class GateWayController : ControllerBase
             CookieAuthenticationDefaults.AuthenticationScheme
         );
         return Ok();
+    }
+
+    [HttpPost("collection")]
+    public async Task<ActionResult> Post([FromBody] Collection collection)
+    {
+        var result = await client.PostAsJsonAsync("api/collection",collection);
+        if (result.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            return Ok();
+        }
+        return BadRequest();
     }
 }

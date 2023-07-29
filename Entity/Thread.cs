@@ -24,6 +24,10 @@ public class Thread
     [MaxLength(3000)]
     public string ThreadText {get;set;} = string.Empty;
 
+    [Column("collectionid")]
+    [ForeignKey("collection")]
+    public int CollectionID {get;set;}
+
     [Column("deleted")]
     [DefaultValue(false)]
     public bool Deleted {get;set;}

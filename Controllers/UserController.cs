@@ -58,7 +58,7 @@ public class UserController : ControllerBase
         }
         catch
         {
-            _logger.LogCritical("Db update exception");
+            _logger.LogCritical("User already exits");
             return BadRequest(JsonSerializer.Serialize(new {Response = "Unseccessful registration"}));
         }
     }

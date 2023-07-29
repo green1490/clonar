@@ -19,16 +19,17 @@ CREATE TABLE accountComment (
 	userID		integer REFERENCES account(id)
 );
 
-CREATE TABLE thread (
-	id 			serial PRIMARY KEY,
-	userID	 	integer REFERENCES account(id),
-	title		VARCHAR(100) NOT NULL,
-	threadText	VARCHAR(3000) NOT NULL,
-	deleted		boolean NOT NULL
+CREATE TABLE collection (
+	id			serial PRIMARY KEY,
+	colName		VARCHAR(30) UNIQUE NOT NULL,
+	description	VARCHAR(200) NOT NULL
 );
 
-CREATE TABLE threadCol (
-	id			serial PRIMARY KEY,
-	colName		VARCHAR(40),
-	threadID	integer REFERENCES thread(id)
+CREATE TABLE thread (
+	id 				serial PRIMARY KEY,
+	userID	 		integer REFERENCES account(id),
+	title			VARCHAR(100) NOT NULL,
+	threadText		VARCHAR(3000) NOT NULL,
+	collectionId	integer REFERENCES collection(id),
+	deleted			boolean NOT NULL
 );
