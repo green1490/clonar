@@ -1,19 +1,22 @@
+using System.ComponentModel;
+using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel;
 
 namespace Entity;
 
 [Table("thread")]
 public class Thread
 {
-    [Column("id")]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
+    [Column("id")]
+    [SwaggerSchema(ReadOnly = true)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ID {get;set;}
 
     [Column("userid")]
     [ForeignKey("account")]
+    [SwaggerSchema(ReadOnly = true)]
     public int UserID {get;set;}
 
     [Column("title")]

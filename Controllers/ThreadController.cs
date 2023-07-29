@@ -23,7 +23,7 @@ public class ThreadController: ControllerBase
         return Ok();
     }
 
-    [HttpPost("creation")]
+    [HttpPost]
     public async Task<ActionResult> Post([FromBody] Entity.Thread thread)
     {   
         using DataContext db = new();

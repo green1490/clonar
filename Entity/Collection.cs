@@ -1,3 +1,4 @@
+using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,6 +9,7 @@ namespace Entity;
 public class Collection
 {
     [Column("id")]
+    [SwaggerSchema(ReadOnly = true)]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ID {get;set;}
 

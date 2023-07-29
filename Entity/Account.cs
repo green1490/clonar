@@ -1,14 +1,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Entity;
 
 [Table("account")]
 public class Account
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
     [Column("id")]
+    [SwaggerSchema(ReadOnly = true)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ID {get; set;}
 
     [Required]
@@ -27,5 +29,6 @@ public class Account
     public String Password {get;set;} = String.Empty;
 
     [Column("karma")]
+    [SwaggerSchema(ReadOnly = true)]
     public int Karma {get;set;}
 }

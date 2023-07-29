@@ -45,7 +45,7 @@ public class GateWayController : ControllerBase
         int id = Convert.ToInt32(User.Claims.First(x => x.Type == "id").Value);
         thread.UserID = id;
 
-        using var response = await client.PostAsJsonAsync("api/thread/creation",thread);
+        using var response = await client.PostAsJsonAsync("api/thread",thread);
         if (response.StatusCode == System.Net.HttpStatusCode.OK)
         {
             return Ok();
