@@ -10,6 +10,7 @@ namespace clonar.Controllers;
 
 [ApiController]
 [Route("api/user")]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class UserController : ControllerBase
 {
     private readonly ILogger _logger;

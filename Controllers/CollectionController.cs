@@ -4,6 +4,7 @@ using Data;
 
 [ApiController]
 [Route("api/collection")]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class CollectionController:ControllerBase
 {
     private ILogger _logger;

@@ -6,6 +6,7 @@ namespace clonar.Controllers;
 
 [ApiController]
 [Route("api/thread")]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class ThreadController: ControllerBase
 {
     private ILogger _logger;
