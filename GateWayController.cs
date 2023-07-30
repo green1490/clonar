@@ -1,5 +1,4 @@
 using Entity;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
@@ -71,5 +70,11 @@ public class GateWayController : ControllerBase
             return Ok();
         }
         return BadRequest();
+    }
+
+    [HttpGet("collection/{name}")]
+    public ActionResult Get(string name)
+    {
+        return RedirectToRoute("listThreads", new {name = name});
     }
 }

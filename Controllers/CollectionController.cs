@@ -29,4 +29,22 @@ public class CollectionController:ControllerBase
             return BadRequest();
         }
     }
+
+    [HttpGet]
+    [Route("{name}", Name = "listThreads")]
+    public ActionResult Get(string name)
+    {   
+        DataContext db = new();
+
+        try
+        {
+            Collection collection = db.Collections.Where(x => x.ColName == name).First();
+            Entity.Thread[] threads = db.Threads.AsParallel().Where(thread => thread.CollectionID == collection.ID).ToArray();
+            return Ok(threads);
+        }
+        catch
+        {
+            return BadRequest();
+        }
+    }
 }
