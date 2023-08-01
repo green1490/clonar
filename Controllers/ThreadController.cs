@@ -35,9 +35,8 @@ public class ThreadController: ControllerBase
             await db.SaveChangesAsync();
             return Ok();
         }
-        catch(Microsoft.EntityFrameworkCore.DbUpdateException e)
+        catch
         {
-            _logger.LogCritical(e.ToString());
             return BadRequest();
         }
     }
