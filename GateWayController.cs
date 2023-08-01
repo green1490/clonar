@@ -77,4 +77,13 @@ public class GateWayController : ControllerBase
     {
         return RedirectToRoute("listThreads", new {name = name});
     }
+
+    [HttpPost("comment")]
+    public ActionResult Post([FromBody] Comment comment)
+    {
+        int id = Convert.ToInt32(User.Claims.First(x => x.Type == "id").Value);
+        comment.UserID = id;
+        client.PostAsJsonAsync("api/comment",comment);
+        return Ok();
+    }
 }

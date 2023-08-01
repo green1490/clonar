@@ -9,6 +9,7 @@ public class DataContext: DbContext
     public DbSet<Entity.Thread> Threads {get;set;}
     public DbSet<Account> Accounts {get;set;}
     public DbSet<Collection> Collections {get;set;}
+    public DbSet<Comment> comments {get;set;}
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder
