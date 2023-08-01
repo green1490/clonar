@@ -19,17 +19,23 @@ public class Thread
     [SwaggerSchema(ReadOnly = true)]
     public int UserID {get;set;}
 
-    [Column("title")]
     [MaxLength(100)]
+    [Column("title")]
     public string Title {get;set;} = string.Empty;
 
-    [Column("threadtext")]
+    [Required]
     [MaxLength(3000)]
+    [Column("threadtext")]
     public string ThreadText {get;set;} = string.Empty;
 
     [Column("collectionid")]
     [ForeignKey("collection")]
+    [SwaggerSchema(ReadOnly = true)]
     public int CollectionID {get;set;}
+
+    [Required]
+    [NotMapped]
+    public string CollectionName {get;set;} = string.Empty;
 
     [Column("deleted")]
     [DefaultValue(false)]

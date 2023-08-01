@@ -1,5 +1,4 @@
 using Data;
-using Entity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace clonar.Controllers;
@@ -29,6 +28,9 @@ public class ThreadController: ControllerBase
         using DataContext db = new();
         try
         {
+            int collID =  db.Collections.AsParallel().Where(collection => collection.ColName == thread.CollectionName).First().ID;
+            thread.CollectionID = collID;
+
             await db.AddAsync(thread);
             await db.SaveChangesAsync();
             return Ok();
