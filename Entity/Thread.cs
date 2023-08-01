@@ -19,6 +19,7 @@ public class Thread
     [SwaggerSchema(ReadOnly = true)]
     public int UserID {get;set;}
 
+    [Required]
     [MaxLength(100)]
     [Column("title")]
     public string Title {get;set;} = string.Empty;
@@ -39,5 +40,6 @@ public class Thread
 
     [Column("deleted")]
     [DefaultValue(false)]
+    [SwaggerSchema(ReadOnly = true)]
     public bool Deleted {get;set;}
 }
