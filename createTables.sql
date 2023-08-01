@@ -1,10 +1,3 @@
-CREATE TABLE comment (
-	id			serial PRIMARY KEY,
-	parentID	integer,
-	userText	VARCHAR(3000) NOT NULL,
-	deleted		boolean NOT NULL
-);
-
 CREATE TABLE account (
 	id 			serial PRIMARY KEY,
 	email 		VARCHAR ( 30 ) UNIQUE NOT NULL,
@@ -13,11 +6,6 @@ CREATE TABLE account (
 	karma 		integer DEFAULT 0
 );
 
-CREATE TABLE accountComment (
-	id			serial PRIMARY KEY,
-	commentID	integer REFERENCES comment(id),
-	userID		integer REFERENCES account(id)
-);
 
 CREATE TABLE collection (
 	id			serial PRIMARY KEY,
@@ -30,6 +18,15 @@ CREATE TABLE thread (
 	userID	 		integer REFERENCES account(id),
 	title			VARCHAR(100) NOT NULL,
 	threadText		VARCHAR(3000) NOT NULL,
-	collectionId	integer REFERENCES collection(id),
+	collectionId	integer REFERENCES collection(id) ON DELETE CASCADE,
 	deleted			boolean NOT NULL
+);
+
+CREATE TABLE comment (
+	id			serial PRIMARY KEY,
+	userID		integer REFERENCES account(id),
+	parentID	integer REFERENCES comment(id),
+	threadID	integer REFERENCES thread(id) ON DELETE CASCADE,
+	userText	VARCHAR(3000) NOT NULL,
+	deleted		boolean NOT NULL
 );
