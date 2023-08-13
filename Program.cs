@@ -21,6 +21,17 @@ builder.Services.AddAuthentication(
         options.ExpireTimeSpan = TimeSpan.FromDays(3);
     });
 
+builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(builder => 
+        {
+            builder.WithOrigins("http://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+    });
+
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
@@ -35,6 +46,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors();
 
 app.MapControllers();
 
