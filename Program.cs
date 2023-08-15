@@ -19,6 +19,7 @@ builder.Services.AddAuthentication(
     .AddCookie(options => 
     {
         options.ExpireTimeSpan = TimeSpan.FromDays(3);
+        options.Cookie.Name = "userData";
     });
 
 builder.Services.AddCors(options =>
