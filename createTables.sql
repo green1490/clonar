@@ -19,7 +19,8 @@ CREATE TABLE thread (
 	title			VARCHAR(100) NOT NULL,
 	threadText		VARCHAR(3000) NOT NULL,
 	collectionId	integer REFERENCES collection(id) ON DELETE CASCADE,
-	deleted			boolean NOT NULL
+	deleted			boolean NOT NULL,
+	image			text	
 );
 
 CREATE TABLE comment (
