@@ -42,8 +42,7 @@ public class Thread
     [DefaultValue(false)]
     [SwaggerSchema(ReadOnly = true)]
     public bool Deleted {get;set;}
-    
-    [Column("image")]
-    [Url]
-    public string Image {get;set;} = string.Empty;
+
+    [Column("karma")]
+    public int Karma {get;set;}
 }

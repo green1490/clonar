@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entity;
 
-//contais threads with a specific interest
 [Table("collection")]
 public class Collection
 {
@@ -12,6 +11,11 @@ public class Collection
     [SwaggerSchema(ReadOnly = true)]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ID {get;set;}
+
+    [Column("ownerid")]
+    [ForeignKey("account")]
+    [SwaggerSchema(ReadOnly = true)]
+    public int OwnerID {get;set;}
 
     [MaxLength(30)]
     [Column("colname")]

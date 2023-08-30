@@ -14,12 +14,14 @@ public class Comment
     public int ID {get;set;}
 
     [Column("userid")]
+    [ForeignKey("account")]
     [SwaggerSchema(ReadOnly = true)]
     public int UserID {get;set;}
 
     [DefaultValue(null)]
     [Column("parentid")]
-    public int? ParentID {get;set;}
+    [ForeignKey("comment")]
+    public int ParentID {get;set;}
 
     [Required]
     [Column("threadid")]
@@ -34,4 +36,7 @@ public class Comment
     [DefaultValue(false)]
     [SwaggerSchema(ReadOnly = true)]
     public bool Deleted {get;set;}
+
+    [Column("karma")]
+    public int Karma {get;set;}
 }

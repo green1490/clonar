@@ -51,9 +51,9 @@ public class UserController : ControllerBase
     public async Task<ActionResult> Post([FromBody] Account account)
     {   
         DataContext db = new();
-        db.Add(account);
         try 
         {
+            await db.AddAsync(account);
             await db.SaveChangesAsync();
             return Ok();
         }

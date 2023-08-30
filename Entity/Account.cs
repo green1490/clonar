@@ -27,8 +27,4 @@ public class Account
     [MaxLength(12)]
     [Column("password")]
     public String Password {get;set;} = String.Empty;
-
-    [Column("karma")]
-    [SwaggerSchema(ReadOnly = true)]
-    public int Karma {get;set;}
 }
