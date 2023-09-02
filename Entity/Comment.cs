@@ -21,7 +21,7 @@ public class Comment
     [DefaultValue(null)]
     [Column("parentid")]
     [ForeignKey("comment")]
-    public int ParentID {get;set;}
+    public int? ParentID {get;set;}
 
     [Required]
     [Column("threadid")]

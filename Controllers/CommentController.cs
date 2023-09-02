@@ -31,4 +31,19 @@ public class CommentController:ControllerBase
             return BadRequest();
         }
     }
+
+    [HttpGet("{id:int}",Name = "getComments")]
+    public ActionResult Get(int id)
+    {
+        using DataContext db = new();
+        try 
+        {
+            Comment[] comments = db.comments.AsParallel().Where(comment => comment.threadID == id).ToArray();
+            return Ok(comments);
+        }
+        catch
+        {
+            return BadRequest("Wasnt able to find any comment");
+        }
+    }
 }

@@ -15,11 +15,20 @@ public class ThreadController: ControllerBase
         _logger = logger;
     }
 
-    [Route("view/{collection}")]
+    [Route("{id:int}",Name = "getThread")]
     [HttpGet]
-    public ActionResult Get(string collection)
+    public ActionResult Get(int id)
     {
-        return Ok();
+        using DataContext db = new();
+        try
+        {
+            Entity.Thread thread =  db.Threads.AsParallel().Where(thread => thread.ID == id).First();
+            return Ok(thread);
+        }
+        catch
+        {
+            return BadRequest("Wasnt able to find the thread");
+        }
     }
 
     [HttpPost]

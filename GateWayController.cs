@@ -29,8 +29,12 @@ public class GateWayController : ControllerBase
     [HttpPost("registration")]
     public async Task<ActionResult> Post([FromBody] Account account)
     {
-        using var response = await client.PostAsJsonAsync("/api/user/registration", account);
-        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+        using var registrationRespone = await client.PostAsJsonAsync("/api/user/registration", account);
+        Karma karma = new() {UserID = account.ID};
+        
+        using var karmaResponse = await client.PostAsJsonAsync("api/karma", karma);
+
+        if (registrationRespone.IsSuccessStatusCode && karmaResponse.IsSuccessStatusCode)
         {
             return Ok();
         }
@@ -39,7 +43,7 @@ public class GateWayController : ControllerBase
 
 
     [HttpPost("thread")]
-    public async Task<ActionResult> Post([FromBody] Entity.Thread thread)
+    public async Task<ActionResult> CreateThread([FromBody] Entity.Thread thread)
     {
         int id = Convert.ToInt32(User.Claims.First(x => x.Type == "id").Value);
         thread.UserID = id;
@@ -52,6 +56,12 @@ public class GateWayController : ControllerBase
         return BadRequest();
     }
 
+    [HttpGet("thread")]
+    public ActionResult GetThread(int id)
+    {
+        return RedirectToRoute("getThread", new {id = id});
+    }
+
     [HttpGet("logout")]
     public async Task<ActionResult> Get()
     {
@@ -62,8 +72,11 @@ public class GateWayController : ControllerBase
     }
 
     [HttpPost("collection")]
-    public async Task<ActionResult> Post([FromBody] Collection collection)
+    public async Task<ActionResult> CreateCollection([FromBody] Collection collection)
     {
+        int id = Convert.ToInt32(User.Claims.First(x => x.Type == "id").Value);
+        collection.OwnerID = id;
+
         var result = await client.PostAsJsonAsync("api/collection",collection);
         if (result.StatusCode == System.Net.HttpStatusCode.OK)
         {
@@ -73,17 +86,30 @@ public class GateWayController : ControllerBase
     }
 
     [HttpGet("collection/{name}")]
-    public ActionResult Get(string name)
+    public ActionResult GetCollection(string name)
     {
         return RedirectToRoute("listThreads", new {name = name});
     }
 
     [HttpPost("comment")]
-    public ActionResult Post([FromBody] Comment comment)
+    public ActionResult CreateComment([FromBody] Comment comment)
     {
         int id = Convert.ToInt32(User.Claims.First(x => x.Type == "id").Value);
         comment.UserID = id;
         client.PostAsJsonAsync("api/comment",comment);
         return Ok();
     }
+
+    [HttpGet("comment")]
+    public ActionResult GetComment(int id)
+    {
+        return RedirectToRoute("getComments", new {id = id});
+    }
+
+    [HttpPost("vote/{value:int}")]
+    public ActionResult Post([FromBody] Vote vote) 
+    {
+        return Ok();
+    }
+
 }
