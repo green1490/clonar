@@ -11,3 +11,12 @@ services:
       - '5432:5432'
     volumes:
       - ./createTables.sql:/docker-entrypoint-initdb.d/createTables.sql
+  
+  backend:
+    build: .
+    ports:
+      - '9000:5246'
+    volumes:
+      - .:/app
+    depends_on:
+      - db
