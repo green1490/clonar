@@ -11,7 +11,11 @@ services:
       - '5432:5432'
     volumes:
       - ./createTables.sql:/docker-entrypoint-initdb.d/createTables.sql
-  
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+    command: postgres -c 'config_file=/etc/postgresql/postgresql.conf'
+    networks:
+      - conectar
+
   backend:
     build: .
     ports:
@@ -19,4 +23,9 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - db
+      - db   
+    networks:
+      - conectar
+
+networks:
+  conectar:

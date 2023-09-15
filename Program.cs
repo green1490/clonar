@@ -1,4 +1,7 @@
+using Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,12 @@ builder.Services.AddSwaggerGen(
         c.EnableAnnotations();
     }
 );
+
+builder.Services.AddDbContext<DataContext>(option => 
+{
+    option.UseNpgsql(builder.Configuration.GetConnectionString("api"));
+});
+
 builder.Services.AddAuthentication(
     CookieAuthenticationDefaults.AuthenticationScheme
     )

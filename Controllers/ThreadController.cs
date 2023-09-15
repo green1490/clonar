@@ -8,21 +8,22 @@ namespace clonar.Controllers;
 [ApiExplorerSettings(IgnoreApi = true)]
 public class ThreadController: ControllerBase
 {
-    private ILogger _logger;
+    private readonly ILogger _logger;
+    private readonly DataContext _db;
 
-    public ThreadController(ILogger<ThreadController> logger)
+    public ThreadController(ILogger<CollectionController> logger,DataContext db)
     {
         _logger = logger;
+        _db = db;
     }
 
     [Route("{id:int}",Name = "getThread")]
     [HttpGet]
     public ActionResult Get(int id)
     {
-        using DataContext db = new();
         try
         {
-            Entity.Thread thread =  db.Threads.AsParallel().Where(thread => thread.ID == id).First();
+            Entity.Thread thread =  _db.Threads.AsParallel().Where(thread => thread.ID == id).First();
             return Ok(thread);
         }
         catch
@@ -34,14 +35,13 @@ public class ThreadController: ControllerBase
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] Entity.Thread thread)
     {   
-        using DataContext db = new();
         try
         {
-            int collID =  db.Collections.AsParallel().Where(collection => collection.ColName == thread.CollectionName).First().ID;
+            int collID =  _db.Collections.AsParallel().Where(collection => collection.ColName == thread.CollectionName).First().ID;
             thread.CollectionID = collID;
 
-            await db.AddAsync(thread);
-            await db.SaveChangesAsync();
+            await _db.AddAsync(thread);
+            await _db.SaveChangesAsync();
             return Ok();
         }
         catch
