@@ -1,9 +1,9 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0
+FROM mcr.microsoft.com/dotnet/sdk
 WORKDIR /app
 COPY . .
-RUN dotnet restore
 
 ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER 1
 
 EXPOSE 5246
 
