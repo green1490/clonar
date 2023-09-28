@@ -45,4 +45,5 @@ public class Thread
 
     [Column("karma")]
     public int Karma {get;set;}
+
 }

@@ -1,7 +1,7 @@
 using Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using MinAPISeparateFile;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +28,6 @@ builder.Services.AddAuthentication(
     .AddCookie(options => 
     {
         options.ExpireTimeSpan = TimeSpan.FromDays(3);
-        options.Cookie.Name = "userData";
     });
 
 builder.Services.AddCors(options =>
@@ -47,12 +46,8 @@ builder.Logging.AddConsole();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -60,5 +55,10 @@ app.UseAuthorization();
 app.UseCors();
 
 app.MapControllers();
+
+//endpoints
+app.MapCollection();
+app.MapThread();
+app.MapUser();
 
 app.Run();
