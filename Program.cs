@@ -60,5 +60,6 @@ app.MapControllers();
 app.MapCollection();
 app.MapThread();
 app.MapUser();
+app.MapComment();
 
 app.Run();
